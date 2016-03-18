@@ -1,0 +1,36 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="${rc.getContextPath()}/css/vm/admin/event.css">
+
+</head>
+<body>
+<form>
+    <label for="eventId">Get Event By Id:</label>
+    <input id="eventId" name="eventId" type="number"/>
+    <input type="submit" value="Get"/>
+</form>
+<form class="event__edit_form" method="POST">
+
+    <label>Id:
+        <input id="id" type="number" name="id" value="$!event.id"/>
+    </label>
+    <label>Title:
+        <input id="title" type="text" name="title" value="$!event.title"/>
+    </label>
+
+    <label>Date:
+        <input id="date" type="date" name="date" value="$event.date"/>
+    </label>
+
+    <label>Ticket Price:
+        <input id="ticketPrice" type="number" name="ticketPrice" value="$event.ticketPrice"/>
+    </label>
+
+    <input class="submit" type="submit" name="action" value="Create"/>
+    <input class="submit" type="submit" name="action" value="Update"/>
+    <input class="submit" type="submit" name="action" value="Delete"/>
+</form>
+
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="${rc.getContextPath()}/css/vm/view/events.css">
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Date</th>
+        <th>Ticket Price</th>
+    </tr>
+    </thead>
+    #foreach($event in $events)
+    <tr>
+        <td>$event.id</td>
+        <td>$!event.title</td>
+        <td>$!event.date</td>
+        <td>$!event.ticketPrice</td>
+    </tr>
+    #end
+</table>
+<form action="${rc.getContextPath()}/view/events">
+    <select name="pageSize">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+    </select>
+    <input type="number" name="pageNum" value="1">
+    <input name="title">
+    <input type="date" name="date">
+    <input type="submit" name="action" value="Title">
+    <input type="submit" name="action" value="Date">
+</form>
+
+<form method="delete">
+    <input type="submit">
+</form>
+</body>
+</html>

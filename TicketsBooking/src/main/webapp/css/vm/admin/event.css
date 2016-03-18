@@ -1,0 +1,16 @@
+.event__edit_form{
+    border-width: 2px;
+    border-style: groove;
+}
+
+.event__edit_form label input{
+    display:block;
+}
+
+.event__edit_form *{
+    margin-left:5px;
+}
+
+.event__edit_form [type=submit]{
+    margin:5px;
+}

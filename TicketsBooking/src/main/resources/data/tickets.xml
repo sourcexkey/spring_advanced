@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tickets>
+    <ticket user="1" event="1" category="BAR" place="1"/>
+    <ticket user="1" event="1" category="BAR" place="2"/>
+    <ticket user="2" event="1" category="BAR" place="3"/>
+
+    <ticket user="1" event="2" category="BAR" place="1"/>
+    <ticket user="2" event="2" category="BAR" place="2"/>
+    <ticket user="3" event="2" category="BAR" place="3"/>
+
+    <ticket user="1" event="3" category="BAR" place="1"/>
+    <ticket user="2" event="3" category="BAR" place="2"/>
+</tickets>

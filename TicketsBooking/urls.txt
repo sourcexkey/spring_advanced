@@ -1,0 +1,3 @@
+http://localhost:8080/TicketsBooking/admin/event
+http://localhost:8080/TicketsBooking/view/events
+http://localhost:8080/TicketsBooking/admin/UploadTickets
