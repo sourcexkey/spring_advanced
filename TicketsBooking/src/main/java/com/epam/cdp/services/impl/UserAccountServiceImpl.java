@@ -4,8 +4,10 @@ import com.epam.cdp.dao.UserAccountDAO;
 import com.epam.cdp.model.UserAccount;
 import com.epam.cdp.services.UserAccountService;
 import com.epam.cdp.services.utils.ArgsCheckingUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserAccountServiceImpl implements UserAccountService {
+    @Autowired
     private UserAccountDAO userAccountDAO;
 
     @Override

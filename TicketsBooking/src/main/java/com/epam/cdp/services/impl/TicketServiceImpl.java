@@ -13,6 +13,7 @@ import com.epam.cdp.services.TicketService;
 import com.epam.cdp.services.utils.ArgsCheckingUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.oxm.castor.CastorMarshaller;
 import org.springframework.transaction.TransactionStatus;
@@ -30,11 +31,13 @@ import java.util.List;
 public class TicketServiceImpl implements TicketService {
     private static final Logger LOG = LoggerFactory.getLogger(TicketServiceImpl.class);
     private String ticketsFileName;
-
+    @Autowired
     private CastorMarshaller unmarshaller;
+    @Autowired
     private TicketDAO ticketDAO;
-
+    @Autowired
     private UserAccountDAO userAccountDAO;
+    @Autowired
     private EventDAO eventDAO;
 
     private TransactionTemplate tTemplate;
@@ -96,24 +99,8 @@ public class TicketServiceImpl implements TicketService {
         });
     }
 
-    public void setTicketDAO(TicketDAO ticketDAO) {
-        this.ticketDAO = ticketDAO;
-    }
-
-    public void setUserAccountDAO(UserAccountDAO userAccountDAO) {
-        this.userAccountDAO = userAccountDAO;
-    }
-
-    public void setEventDAO(EventDAO eventDAO) {
-        this.eventDAO = eventDAO;
-    }
-
     public void setTicketsFileName(String ticketsFileName) {
         this.ticketsFileName = ticketsFileName;
-    }
-
-    public void setUnmarshaller(CastorMarshaller unmarshaller) {
-        this.unmarshaller = unmarshaller;
     }
 
     public void settTemplate(TransactionTemplate tTemplate) {

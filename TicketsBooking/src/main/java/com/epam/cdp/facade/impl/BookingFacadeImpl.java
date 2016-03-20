@@ -22,22 +22,16 @@ import java.util.List;
 
 public class BookingFacadeImpl implements BookingFacade {
     private static final Logger LOG = LoggerFactory.getLogger(BookingFacadeImpl.class);
-
+    @Autowired
     private EventService eventService;
+    @Autowired
     private UserService userService;
+    @Autowired
     private TicketService ticketService;
+    @Autowired
     private UserAccountService userAccountService;
-
     @Autowired
     private DefaultUserEvent defaultUserEvent;
-
-    public BookingFacadeImpl(EventService eventService, UserService userService, TicketService ticketService, UserAccountService userAccountService, DefaultUserEvent defaultUserEvent) {
-        this.eventService = eventService;
-        this.userService = userService;
-        this.ticketService = ticketService;
-        this.userAccountService = userAccountService;
-        this.defaultUserEvent = defaultUserEvent;
-    }
 
     @Override
     public Event getEventById(long eventId) {

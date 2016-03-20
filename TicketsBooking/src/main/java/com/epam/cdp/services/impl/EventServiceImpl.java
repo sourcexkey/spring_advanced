@@ -4,11 +4,13 @@ import com.epam.cdp.dao.EventDAO;
 import com.epam.cdp.model.Event;
 import com.epam.cdp.services.EventService;
 import com.epam.cdp.services.utils.ArgsCheckingUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.List;
 
 public class EventServiceImpl implements EventService {
+    @Autowired
     private EventDAO eventDAO;
 
     @Override
