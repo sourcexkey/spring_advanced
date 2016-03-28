@@ -2,15 +2,37 @@ package com.epam.cdp.services.impl;
 
 import com.epam.cdp.dao.UserDAO;
 import com.epam.cdp.model.User;
+import com.epam.cdp.model.impl.TicketEntity;
+import com.epam.cdp.model.impl.UserEntity;
+import com.epam.cdp.model.impl.Users;
 import com.epam.cdp.services.UserService;
 import com.epam.cdp.services.utils.ArgsCheckingUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.oxm.castor.CastorMarshaller;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import javax.xml.transform.stream.StreamSource;
+
 public class UserServiceImpl implements UserService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    @Qualifier("userMarshaller")
+    private CastorMarshaller unmarshaller;
+    @Autowired
+    private TransactionTemplate tTemplate;
 
     @Override
     public User getUserById(long userId) {
@@ -46,6 +68,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean deleteUser(long userId) {
         return userDAO.delete(userId);
+    }
+
+    @Override
+    public void loadUsersFromFile(final InputStream is) {
+        tTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+                List<UserEntity> users;
+                try {
+                    Users unmarshall = (Users) unmarshaller.unmarshal(new StreamSource(is));
+                    users = unmarshall.getUsers();
+                } catch (IOException e) {
+                    LOG.warn("IOException:", e);
+                    return;
+                }
+                for (UserEntity u : users) {
+                    userDAO.create(u);
+                }
+            }
+        });
     }
 
     public void setUserDAO(UserDAO userDAO) {

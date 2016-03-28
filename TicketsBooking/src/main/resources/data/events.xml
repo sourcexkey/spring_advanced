@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<events>
+    <event title="title1" date="732664800000" ticketPrice="120"/>
+    <event title="title2" date="732664800001" ticketPrice="121"/>
+    <event title="title3" date="732664800002" ticketPrice="122"/>
+    <event title="title4" date="732664800003" ticketPrice="123"/>
+    <event title="title5" date="732664800004" ticketPrice="124"/>
+</events>

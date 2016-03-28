@@ -2,6 +2,7 @@ package com.epam.cdp.services;
 
 import com.epam.cdp.model.Event;
 
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -58,4 +59,6 @@ public interface EventService {
      * @return Flag that shows whether event has been deleted.
      */
     boolean deleteEvent(long eventId);
+
+    void loadEventsFromFile(InputStream is);
 }

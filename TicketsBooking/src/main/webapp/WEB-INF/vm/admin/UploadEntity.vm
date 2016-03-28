@@ -5,6 +5,10 @@
 <form method="POST" enctype="multipart/form-data">
 
     Please select a file to upload : <input type="file" name="file"/>
+    <select name="entity">
+        <option value="events">Events</option>
+        <option value="users">Users</option>
+    </select>
     <input type="submit" value="upload"/>
 
 </form>

@@ -49,5 +49,4 @@ public interface TicketService {
      */
     boolean cancelTicket(long ticketId);
 
-    void loadTicketsFromFile(InputStream is);
 }

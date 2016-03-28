@@ -22,7 +22,7 @@ public class TicketsPDFController {
     @Autowired
     BookingFacade facade;
 
-    @RequestMapping(value = "/bookedTickets",headers = "accept=application/pdf")
+    @RequestMapping(value = "/bookedTickets.pdf")
     public ModelAndView getEventsByTitle(@RequestParam(value = "userId") Long id,
                                  @RequestParam(value = "pageNum", required = false) Integer pageNum,
                                  @RequestParam(value = "pageSize", required = false) Integer pageSize,

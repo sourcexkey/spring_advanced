@@ -138,8 +138,14 @@ public class BookingFacadeImpl implements BookingFacade {
         return userAccountService.deleteUserAccount(userAccountId);
     }
 
-    public void loadTicketsFromFile(InputStream is) {
-        ticketService.loadTicketsFromFile(is);
+    @Override
+    public void loadUsersFromFile(InputStream is) {
+        userService.loadUsersFromFile(is);
+    }
+
+    @Override
+    public void loadEventsFromFile(InputStream is) {
+        eventService.loadEventsFromFile(is);
     }
 
     @Override

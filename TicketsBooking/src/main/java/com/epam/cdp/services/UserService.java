@@ -2,6 +2,7 @@ package com.epam.cdp.services;
 
 import com.epam.cdp.model.User;
 
+import java.io.InputStream;
 import java.util.List;
 
 public interface UserService {
@@ -54,4 +55,5 @@ public interface UserService {
      */
     boolean deleteUser(long userId);
 
+    void loadUsersFromFile(InputStream is);
 }

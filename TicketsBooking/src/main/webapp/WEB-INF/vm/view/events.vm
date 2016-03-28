@@ -21,7 +21,7 @@
     </tr>
     #end
 </table>
-<form action="${rc.getContextPath()}/view/events">
+<form action="${rc.getContextPath()}/events">
     <select name="pageSize">
         <option value="5">5</option>
         <option value="10">10</option>

@@ -2,16 +2,37 @@ package com.epam.cdp.services.impl;
 
 import com.epam.cdp.dao.EventDAO;
 import com.epam.cdp.model.Event;
+import com.epam.cdp.model.impl.EventEntity;
+import com.epam.cdp.model.impl.Events;
 import com.epam.cdp.services.EventService;
 import com.epam.cdp.services.utils.ArgsCheckingUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.oxm.castor.CastorMarshaller;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.transform.stream.StreamSource;
+
 public class EventServiceImpl implements EventService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private EventDAO eventDAO;
+    @Autowired
+    @Qualifier("eventMarshaller")
+    private CastorMarshaller unmarshaller;
+    @Autowired
+    private TransactionTemplate tTemplate;
 
     @Override
     public Event getEventById(long eventId) {
@@ -50,7 +71,23 @@ public class EventServiceImpl implements EventService {
         return eventDAO.delete(eventId);
     }
 
-    public void setEventDAO(EventDAO eventDAO) {
-        this.eventDAO = eventDAO;
+    @Override
+    public void loadEventsFromFile(final InputStream is) {
+        tTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+                List<EventEntity> events;
+                try {
+                    Events unmarshall = (Events) unmarshaller.unmarshal(new StreamSource(is));
+                    events = unmarshall.getEvents();
+                } catch (IOException e) {
+                    LOG.warn("IOException:", e);
+                    return;
+                }
+                for (EventEntity e : events) {
+                    eventDAO.create(e);
+                }
+            }
+        });
     }
 }

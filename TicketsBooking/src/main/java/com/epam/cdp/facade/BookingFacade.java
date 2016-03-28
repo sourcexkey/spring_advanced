@@ -120,7 +120,8 @@ public interface BookingFacade {
     boolean deleteUser(long userId);
 
     /**
-     * Book ticket for a specified event on behalf of specified user and withdraw money from user account.
+     * Book ticket for a specified event on behalf of specified user and withdraw money from user
+     * account.
      *
      * @param userId   User Id.
      * @param eventId  Event Id.
@@ -132,7 +133,8 @@ public interface BookingFacade {
     Ticket bookTicket(long userId, long eventId, int place, Ticket.Category category);
 
     /**
-     * Get all booked tickets for specified user. Tickets should be sorted by event date in descending order.
+     * Get all booked tickets for specified user. Tickets should be sorted by event date in
+     * descending order.
      *
      * @param user     User
      * @param pageSize Pagination param. Number of tickets to return on a page.
@@ -142,7 +144,8 @@ public interface BookingFacade {
     List<Ticket> getBookedTickets(User user, int pageSize, int pageNum);
 
     /**
-     * Get all booked tickets for specified event. Tickets should be sorted in by user email in ascending order.
+     * Get all booked tickets for specified event. Tickets should be sorted in by user email in
+     * ascending order.
      *
      * @param event    Event
      * @param pageSize Pagination param. Number of tickets to return on a page.
@@ -198,7 +201,9 @@ public interface BookingFacade {
      */
     boolean deleteUserAccount(long userAccountId);
 
-    void loadTicketsFromFile(InputStream is);
+    void loadUsersFromFile(InputStream is);
+
+    void loadEventsFromFile(InputStream is);
 
     void setDefaultUser(User defaultUser);
 

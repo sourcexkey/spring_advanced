@@ -23,11 +23,6 @@
     <bean id="eventService" class="com.epam.cdp.services.impl.EventServiceImpl"/>
     <bean id="ticketService" class="com.epam.cdp.services.impl.TicketServiceImpl"
           p:ticketsFileName="${tickets}">
-        <property name="tTemplate">
-            <bean class="org.springframework.transaction.support.TransactionTemplate">
-                <constructor-arg ref="txManager"/>
-            </bean>
-        </property>
     </bean>
     <bean id="userService" class="com.epam.cdp.services.impl.UserServiceImpl"/>
     <bean id="userAccountService" class="com.epam.cdp.services.impl.UserAccountServiceImpl"/>
@@ -43,6 +38,10 @@
         <jdbc:script location="classpath:sql/schema.sql"/>
         <jdbc:script location="classpath:sql/data.sql"/>
     </jdbc:initialize-database>
+
+    <bean name="tTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <constructor-arg ref="txManager"/>
+    </bean>
 
     <bean id="dbi" class="org.skife.jdbi.v2.spring.DBIFactoryBean">
         <property name="dataSource" ref="dataSource"/>
@@ -63,9 +62,13 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller">
-        <property name="targetClass" value="com.epam.cdp.model.impl.TicketEntity"/>
-        <property name="mappingLocation" value="classpath:data/mapping.xml"/>
+    <bean id="eventMarshaller" class="org.springframework.oxm.castor.CastorMarshaller">
+        <property name="targetClass" value="com.epam.cdp.model.impl.EventEntity"/>
+        <property name="mappingLocation" value="classpath:data/mapping/event.xml"/>
+    </bean>
+    <bean id="userMarshaller" class="org.springframework.oxm.castor.CastorMarshaller">
+        <property name="targetClass" value="com.epam.cdp.model.impl.UserEntity"/>
+        <property name="mappingLocation" value="classpath:data/mapping/user.xml"/>
     </bean>
 
     <bean id="defaultUserEvent" class="com.epam.cdp.model.impl.DefaultUserEvent">

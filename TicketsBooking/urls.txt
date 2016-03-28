@@ -1,3 +1,4 @@
-http://localhost:8080/TicketsBooking/admin/event
-http://localhost:8080/TicketsBooking/view/events
-http://localhost:8080/TicketsBooking/admin/UploadTickets
+http://localhost:8080/TicketsBooking/UploadEntity
+http://localhost:8080/TicketsBooking/bookedTickets.pdf?pageSize=5&pageNum=1&userId=1
+http://localhost:8080/TicketsBooking/event
+http://localhost:8080/TicketsBooking/events

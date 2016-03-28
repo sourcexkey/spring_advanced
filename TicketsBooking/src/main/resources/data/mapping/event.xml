@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+    <class name="com.epam.cdp.model.impl.Events">
+        <map-to xml="events"/>
+        <field name="Events" collection="arraylist" type="com.epam.cdp.model.impl.EventEntity">
+            <bind-xml name="events"/>
+        </field>
+    </class>
+
+    <class name="com.epam.cdp.model.impl.EventEntity">
+
+        <map-to xml="event"/>
+
+        <field name="title" type="java.lang.String">
+            <bind-xml name="title" node="attribute"/>
+        </field>
+        <field name="date" type="java.util.Date">
+            <bind-xml name="date" node="attribute" handler="dateHandler"/>
+        </field>
+        <field name="ticketPrice" type="java.math.BigDecimal">
+            <bind-xml name="ticketPrice" node="attribute"/>
+        </field>
+    </class>
+</mapping>
