@@ -2,6 +2,8 @@ package com.epam.cdp.dao;
 
 import com.epam.cdp.model.User;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.List;
 
 public interface UserDAO {
@@ -54,4 +56,6 @@ public interface UserDAO {
      * @return Flag that shows whether user has been deleted.
      */
     boolean delete(long userId);
+
+    UserDetails getUserDetailsByEmail(String email);
 }

@@ -34,8 +34,6 @@
     <input type="submit" name="action" value="Date">
 </form>
 
-<form method="delete">
-    <input type="submit">
-</form>
+<a href="/TicketsBooking/logout">Logout</a>
 </body>
 </html>

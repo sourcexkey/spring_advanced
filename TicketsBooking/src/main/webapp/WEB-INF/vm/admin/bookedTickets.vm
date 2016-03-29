@@ -1,0 +1,39 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="${rc.getContextPath()}/css/vm/view/events.css">
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>EventTitle</th>
+        <th>EventDate</th>
+        <th>Category</th>
+        <th>Place</th>
+    </tr>
+    </thead>
+    #foreach ($ticketsEntry in $tickets.entrySet())
+        #foreach ($ticket in $ticketsEntry.value )
+            <tr>
+                <td>$!ticketsEntry.key.title</td>
+                <td>$!ticketsEntry.key.date</td>
+                <td>$!ticket.category</td>
+                <td>$!ticket.place</td>
+            </tr>
+        #end
+    #end
+</table>
+<form action="${rc.getContextPath()}/bookedTickets">
+    <select name="pageSize">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+    </select>
+    <input type="number" name="pageNum" value="1">
+    <input name="title">
+    <input type="submit" name="action">
+</form>
+
+<a href="${rc.getContextPath()}/logout">Logout</a>
+</body>
+</html>

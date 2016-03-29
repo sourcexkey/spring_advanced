@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +19,9 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Controller
 public class BookingController {
@@ -29,6 +33,11 @@ public class BookingController {
     public static final String PAGE_SIZE = "pageSize";
     public static final String DATE = "date";
     public static final String TITLE = "title";
+    public static final int FIRST_PAGE = 1;
+    public static final String DEFAULT_PAGE_NUM = "1";
+    public static final String DEFAULT_PAGE_SIZE = "10";
+    public static final String TICKETS = "tickets";
+    public static final String EVENTS = "events";
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     @Autowired
     BookingFacade facade;
@@ -107,17 +116,34 @@ public class BookingController {
             @RequestParam(value = PAGE_NUM, required = false) Integer pageNum,
             @RequestParam(value = PAGE_SIZE, required = false) Integer pageSize) {
         ModelAndView mav = new ModelAndView("/view/events");
-        mav.addObject("events", facade.getEventsByTitle(title, pageSize, pageNum));
+        mav.addObject(EVENTS, facade.getEventsByTitle(title, pageSize, pageNum));
         return mav;
     }
 
     @RequestMapping(value = "/events", params = "action=Date")
     public ModelAndView getEventsByDate(@RequestParam(value = DATE, required = false) String date,
-                                        @RequestParam(value = PAGE_NUM, required = false, defaultValue = "1") Integer pageNum,
-                                        @RequestParam(value = PAGE_SIZE, required = false, defaultValue = "10") Integer pageSize)
+                                        @RequestParam(value = PAGE_NUM, required = false, defaultValue = DEFAULT_PAGE_NUM) Integer pageNum,
+                                        @RequestParam(value = PAGE_SIZE, required = false, defaultValue = DEFAULT_PAGE_SIZE) Integer pageSize)
             throws ParseException {
         ModelAndView mav = new ModelAndView("/view/events");
-        mav.addObject("events", facade.getEventsForDay(getDate(date), pageSize, pageNum));
+        mav.addObject(EVENTS, facade.getEventsForDay(getDate(date), pageSize, pageNum));
         return mav;
+    }
+
+    @RequestMapping(value = "/bookedTickets")
+    public ModelAndView getBookedTicketsForEvent(
+            @RequestParam(value = TITLE, required = false) String title,
+            @RequestParam(value = PAGE_NUM, required = false, defaultValue = DEFAULT_PAGE_NUM) Integer pageNum,
+            @RequestParam(value = PAGE_SIZE, required = false, defaultValue = DEFAULT_PAGE_SIZE) Integer pageSize)
+            throws ParseException {
+        List<Event> eventsByTitle =
+                facade.getEventsByTitle(title, Integer.MAX_VALUE, FIRST_PAGE);
+        return new ModelAndView("/admin/bookedTickets")
+                .addObject(TICKETS,
+                           eventsByTitle
+                                   .stream()
+                                   .collect(Collectors.toMap(Function.identity(), e -> facade
+                                           .getBookedTickets(e, pageSize, pageNum)))
+                );
     }
 }

@@ -115,4 +115,6 @@ public class TicketEntity implements Ticket {
                 ", place=" + place +
                 '}';
     }
+
+
 }

@@ -13,5 +13,6 @@
 
 </form>
 
+<a href="${rc.getContextPath()}/logout">Logout</a>
 </body>
 </html>

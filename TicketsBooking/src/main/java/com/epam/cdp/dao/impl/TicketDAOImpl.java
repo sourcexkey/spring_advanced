@@ -10,6 +10,7 @@ import com.epam.cdp.model.Ticket;
 import com.epam.cdp.model.User;
 import com.epam.cdp.model.impl.DefaultUserEvent;
 import com.epam.cdp.model.impl.TicketEntity;
+
 import org.skife.jdbi.v2.GeneratedKeys;
 import org.skife.jdbi.v2.Handle;
 import org.skife.jdbi.v2.IDBI;
@@ -27,12 +28,22 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import java.util.List;
 
 public class TicketDAOImpl implements TicketDAO {
+
     private static final Logger LOG = LoggerFactory.getLogger(TicketDAOImpl.class);
 
-    private static final String SELECT_TICKETS_BY_USER = "SELECT t.id,t.event_id,t.user_id,t.category,t.place,e.day FROM tickets AS t INNER JOIN events AS e ON t.event_id=e.id WHERE t.user_id = :user_id ORDER BY e.day DESC " + DAOConstants.LIMIT_OFFSET;
-    private static final String SELECT_TICKETS_BY_EVENT = "SELECT t.id,t.event_id,t.user_id,t.category,t.place,u.email FROM tickets AS t INNER JOIN users AS u ON t.user_id=u.id  WHERE t.event_id = :event_id ORDER BY u.email ASC " + DAOConstants.LIMIT_OFFSET;
-    private static final String INSERT_TICKET = "INSERT INTO tickets VALUES(default,:event_id,:user_id,:category,:place)";
+    private static final String
+            SELECT_TICKETS_BY_USER =
+            "SELECT t.id,t.event_id,t.user_id,t.category,t.place,e.day FROM tickets AS t INNER JOIN events AS e ON t.event_id=e.id WHERE t.user_id = :user_id ORDER BY e.day DESC "
+            + DAOConstants.LIMIT_OFFSET;
+    private static final String
+            SELECT_TICKETS_BY_EVENT =
+            "SELECT t.id,t.event_id,t.user_id,t.category,t.place,u.email FROM tickets AS t INNER JOIN users AS u ON t.user_id=u.id  WHERE t.event_id = :event_id ORDER BY u.email ASC "
+            + DAOConstants.LIMIT_OFFSET;
+    private static final String
+            INSERT_TICKET =
+            "INSERT INTO tickets VALUES(default,:event_id,:user_id,:category,:place)";
     private static final String DELETE_TICKET = "DELETE FROM tickets WHERE id=:id";
+    public static final TicketRawMapper TICKET_RAW_MAPPER = new TicketRawMapper();
 
     @Autowired
     private IDBI dbi;
@@ -77,21 +88,27 @@ public class TicketDAOImpl implements TicketDAO {
         }
         return ticket;
     }
+
     public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
         int offset = DAOUtils.calcOffset(pageSize, pageNum);
-        SqlParameterSource parameters = new DefaultEventUserSQLPS(defaultUserEvent)
-                .addValue(DAOConstants.USER_ID_PLACEHOLDER, user.getId())
-                .addValue(DAOConstants.LIMIT_PLACEHOLDER, pageSize)
-                .addValue(DAOConstants.OFFSET_PLACEHOLDER, offset);
-        return jdbcTemplate.query(SELECT_TICKETS_BY_USER, parameters, new TicketRawMapper());
+        Handle h = DBIUtil.getHandle(dbi);
+        return h.createQuery(SELECT_TICKETS_BY_USER)
+                .map(TICKET_RAW_MAPPER)
+                .bind(DAOConstants.USER_ID_PLACEHOLDER, user.getId())
+                .bind(DAOConstants.LIMIT_PLACEHOLDER, pageSize)
+                .bind(DAOConstants.OFFSET_PLACEHOLDER, offset)
+                .list();
     }
+
     public List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum) {
         int offset = DAOUtils.calcOffset(pageSize, pageNum);
-        SqlParameterSource parameters = new DefaultEventUserSQLPS(defaultUserEvent)
-                .addValue(DAOConstants.EVENT_ID_PLACEHOLDER, event.getId())
-                .addValue(DAOConstants.LIMIT_PLACEHOLDER, pageSize)
-                .addValue(DAOConstants.OFFSET_PLACEHOLDER, offset);
-        return jdbcTemplate.query(SELECT_TICKETS_BY_EVENT, parameters, new TicketRawMapper());
+        Handle h = DBIUtil.getHandle(dbi);
+        return h.createQuery(SELECT_TICKETS_BY_EVENT)
+                .map(TICKET_RAW_MAPPER)
+                .bind(DAOConstants.EVENT_ID_PLACEHOLDER, event.getId())
+                .bind(DAOConstants.LIMIT_PLACEHOLDER, pageSize)
+                .bind(DAOConstants.OFFSET_PLACEHOLDER, offset)
+                .list();
     }
 
     public boolean cancelTicket(long ticketId) {

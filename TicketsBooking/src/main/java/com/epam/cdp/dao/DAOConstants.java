@@ -16,4 +16,11 @@ public class DAOConstants {
     public static final String USER_ID_PLACEHOLDER = "user_id";
     public static final String PLACE_PLACEHOLDER = "place";
     public static final String CURRENCY_PLACEHOLDER = "currency";
+
+    public static final String PASSWORD_PLACEHOLDER = "password";
+    public static final String ENABLED_PLACEHOLDER = "enabled";
+    public static final String ACCOUNT_NON_EXPIRED_PLACEHOLDER = "account_non_expired";
+    public static final String CREDENTIALS_NON_EXPIRED_PLACEHOLDER = "credential_non_expired";
+    public static final String ACCOUNT_NON_LOCKED_PLACEHOLDER = "account_non_locked";
+    public static final String AUTHORITIES_PLACEHOLDER = "authorities";
 }

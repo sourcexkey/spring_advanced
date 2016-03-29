@@ -1,12 +1,22 @@
 DROP  TABLE IF EXISTS user_accounts;
 DROP  TABLE IF EXISTS tickets;
+DROP  TABLE IF EXISTS users_details;
 DROP  TABLE IF EXISTS users;
 DROP  TABLE IF EXISTS events;
+DROP  TABLE IF EXISTS persistent_logins;
+
+CREATE TABLE persistent_logins (
+    username varchar(64) not null,
+    series varchar(64) not null,
+    token varchar(64) not null,
+    last_used timestamp not null,
+    PRIMARY KEY (series)
+);
 
 create table events (
     id BIGINT NOT NULL AUTO_INCREMENT,
     title varchar(255),
-    day DATE(255),
+    day DATE,
     ticket_price DECIMAL(20,2),
     PRIMARY KEY (ID)
 );
@@ -17,6 +27,18 @@ create table users (
     email varchar(255),
     PRIMARY KEY (ID)
 );
+
+create table users_details(
+    user_id BIGINT NOT NULL,
+    password VARCHAR(255),
+    enabled BOOLEAN,
+    account_non_expired BOOLEAN,
+    credential_non_expired BOOLEAN,
+    account_non_locked BOOLEAN,
+    authorities VARCHAR(255) DEFAULT 'ROLE_REGISTERED_USER',
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 
 create table user_accounts (
     id BIGINT NOT NULL AUTO_INCREMENT,

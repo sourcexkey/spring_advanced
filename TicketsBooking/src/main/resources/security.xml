@@ -7,21 +7,33 @@
                  http://www.springframework.org/schema/security
                  http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-    <http use-expressions="true" auto-config='true'
+    <http use-expressions="true"
           access-decision-manager-ref="accessDecisionManager">
         <intercept-url pattern="/login" access="isAnonymous()"/>
-        <intercept-url pattern="/**" access="hasRole('REGISTERED_USER')"/>
-        <intercept-url pattern="/bockedTickets*" access="hasRole('BOOKING_MANAGER')"/>
+        <intercept-url pattern="/bookedTickets" access="hasRole('ROLE_BOOKING_MANAGER')"/>
+        <intercept-url pattern="/**" access="hasRole('ROLE_REGISTERED_USER')"/>
         <form-login
                 login-page="/login"
                 always-use-default-target="true"
                 default-target-url="/events"
                 authentication-failure-url="/error"/>
-        <logout logout-url="/logout" logout-success-url="/login"/>
+        <custom-filter position="LOGOUT_FILTER" ref="logoutFilter"/>
         <access-denied-handler error-page="/error"/>
-        <remember-me/>
+        <remember-me user-service-ref="userService"/>
         <csrf disabled="true"/>
     </http>
+    <beans:bean id="securityContextLogoutHandler"
+                class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"/>
+    <beans:bean id="logoutFilter"
+                class="org.springframework.security.web.authentication.logout.LogoutFilter">
+        <beans:property name="filterProcessesUrl" value="/logout"/>
+        <beans:constructor-arg value="/login"/>
+        <beans:constructor-arg>
+            <beans:list>
+                <beans:ref bean="securityContextLogoutHandler"/>
+            </beans:list>
+        </beans:constructor-arg>
+    </beans:bean>
 
     <beans:bean
             id="accessDecisionManager"
@@ -38,20 +50,19 @@
 
     <beans:bean id="roleVoter" primary="true"
                 class="org.springframework.security.access.vote.RoleVoter">
-        <beans:property name="rolePrefix">
-            <beans:value></beans:value>
-        </beans:property>
+        <beans:property name="rolePrefix" value=""/>
     </beans:bean>
     <global-method-security secured-annotations="enabled"/>
+    <beans:bean id="authProvider"
+                class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <beans:property name="userDetailsService" ref="userService"/>
+        <beans:property name="passwordEncoder">
+            <beans:bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+        </beans:property>
+    </beans:bean>
+
+
     <authentication-manager>
-        <authentication-provider>
-            <user-service>
-                <user name="Manager1" password="pass"
-                      authorities="BOOKING_MANAGER,REGISTERED_USER"/>
-                <user name="Manager2" password="1111"
-                      authorities="BOOKING_MANAGER,REGISTERED_USER"/>
-                <user name="user" password="2222" authorities="REGISTERED_USER"/>
-            </user-service>
-        </authentication-provider>
+        <authentication-provider ref="authProvider"/>
     </authentication-manager>
 </beans:beans>

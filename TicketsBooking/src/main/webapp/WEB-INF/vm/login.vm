@@ -1,11 +1,14 @@
 <html>
 <body>
 <form action="login" method="POST">
-    <input type="text" name="username">
-    <input type="password" name="password">
-    <input type="checkbox" name="remember-me">
+    <label for="username">User Email:</label>
+    <input id="username" type="text" name="username">
+    <label for="password">Password:</label>
+    <input id="password" type="password" name="password">
+    <label for="remember-me">Remember Me:</label>
+    <input if="remember-me" type="checkbox" name="remember-me">
     <input type="submit" name="action" value="Login">
 </form>
-
+    <a href="${rc.getContextPath()}/logout">Logout</a>
 </body>
 </html>

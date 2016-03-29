@@ -2,7 +2,6 @@ package com.epam.cdp.services.impl;
 
 import com.epam.cdp.dao.UserDAO;
 import com.epam.cdp.model.User;
-import com.epam.cdp.model.impl.TicketEntity;
 import com.epam.cdp.model.impl.UserEntity;
 import com.epam.cdp.model.impl.Users;
 import com.epam.cdp.services.UserService;
@@ -13,6 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.oxm.castor.CastorMarshaller;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -23,7 +25,7 @@ import java.util.List;
 
 import javax.xml.transform.stream.StreamSource;
 
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
@@ -92,5 +94,10 @@ public class UserServiceImpl implements UserService {
 
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userDAO.getUserDetailsByEmail(email);
     }
 }
