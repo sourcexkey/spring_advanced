@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+    <class name="com.epam.cdp.model.impl.Users">
+        <map-to xml="users"/>
+        <field name="Users" collection="arraylist" type="com.epam.cdp.model.impl.UserEntity">
+            <bind-xml name="users"/>
+        </field>
+    </class>
+
+    <class name="com.epam.cdp.model.impl.UserEntity">
+
+        <map-to xml="user"/>
+        <field name="name" type="java.lang.String">
+            <bind-xml name="name" node="attribute"/>
+        </field>
+        <field name="email" type="java.lang.String">
+            <bind-xml name="email" node="attribute"/>
+        </field>
+    </class>
+</mapping>
