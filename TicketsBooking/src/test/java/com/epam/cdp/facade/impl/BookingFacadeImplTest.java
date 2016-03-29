@@ -40,7 +40,6 @@ public class BookingFacadeImplTest {
     public static final int PAGE_SIZE = 10;
     public static final int PAGE_NUM = 1;
     public static final int USER_ID = 1;
-    public static final int DEFAULT_USER_ID = 2;
 
 
     @Autowired
@@ -84,15 +83,6 @@ public class BookingFacadeImplTest {
         List<Ticket> bookedTickets = bookingFacade.getBookedTickets(new UserEntity(USER_ID, USER_NAME, USER_EMAIL), PAGE_SIZE, PAGE_NUM);
         for (Ticket t : bookedTickets) {
             assertEquals(USER_ID, t.getUserId());
-        }
-    }
-
-    @Test
-    public void getBookedTicketsByDefaultUser() {
-        bookingFacade.setDefaultUser(new UserEntity(DEFAULT_USER_ID, null, null));
-        List<Ticket> bookedTickets = bookingFacade.getBookedTickets(new UserEntity(USER_ID, USER_NAME, USER_EMAIL), PAGE_SIZE, PAGE_NUM);
-        for (Ticket t : bookedTickets) {
-            assertEquals(DEFAULT_USER_ID, t.getUserId());
         }
     }
 
